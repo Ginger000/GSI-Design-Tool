@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { Stack } from '@mui/material';
 
-const OutputPanel = ({initialDepth, initialRatio}) => {
+const OutputPanel = ({initialDepth, initialRatio, surface}) => {
     const [depth, setDepth] = useState(initialDepth)
     const changeDepth = e => setDepth(Number.parseInt(e.target.value))
     const [loadingRatio, setLoadingRatio] = useState(initialRatio);
@@ -37,17 +37,30 @@ const OutputPanel = ({initialDepth, initialRatio}) => {
                 </RadioGroup>
             </FormControl>
             
-
-            <FormControl component="fieldset">
+            {surface === "planted" ?
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">Loading Ratio</FormLabel>
+                    <RadioGroup value={loadingRatio} onChange={changeRatio} row aria-label="loading ratio" name="row-radio-buttons-group">
+                        <FormControlLabel value={0.2} control={<Radio />} label="1:5" />
+                        <FormControlLabel value={0.33} control={<Radio />} label="1:3" />
+                        <FormControlLabel value={0.5} control={<Radio />} label="1:2" />
+                        <FormControlLabel disabled value={1} control={<Radio />} label="1:1" />
+                        <FormControlLabel disabled value={0} control={<Radio />} label="Direct Infiltration" />
+                    </RadioGroup>
+                </FormControl> : 
+                <FormControl component="fieldset">
                 <FormLabel component="legend">Loading Ratio</FormLabel>
-                <RadioGroup value={loadingRatio} onChange={changeRatio} row aria-label="loading ratio" name="row-radio-buttons-group">
-                    <FormControlLabel value={0.2} control={<Radio />} label="1:5" />
-                    <FormControlLabel value={0.33} control={<Radio />} label="1:3" />
-                    <FormControlLabel value={0.5} control={<Radio />} label="1:2" />
-                    <FormControlLabel value={1} control={<Radio />} label="1:1" />
-                    <FormControlLabel value={0} control={<Radio />} label="Direct Infiltration" />
-                </RadioGroup>
-            </FormControl>
+                    <RadioGroup value={loadingRatio} onChange={changeRatio} row aria-label="loading ratio" name="row-radio-buttons-group">
+                        <FormControlLabel disabled value={0.2} control={<Radio />} label="1:5" />
+                        <FormControlLabel disabled value={0.33} control={<Radio />} label="1:3" />
+                        <FormControlLabel disabled value={0.5} control={<Radio />} label="1:2" />
+                        <FormControlLabel value={1} control={<Radio />} label="1:1" />
+                        <FormControlLabel value={0} control={<Radio />} label="Direct Infiltration" />
+                    </RadioGroup>
+                </FormControl>
+            }
+
+            
         </Stack>
     )
 }
