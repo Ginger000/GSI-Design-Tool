@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import { Stack } from '@mui/material';
 import DATA from "../Data/newFeedbackSearch_all.json"
 
-const InputPanel = () => {
+const InputPanel = ({generateScenarios}) => {
     const [duration, setDuration] = useState(null)
     //https://github.com/mui-org/material-ui/issues/8180
     const changeDuration = e => setDuration(Number.parseInt(e.target.value))
@@ -24,52 +24,13 @@ const InputPanel = () => {
     const valuetext = (designStorm) => {
         return `${designStorm} inches`
     }
-    useEffect(()=>console.log(duration, soilType, surfaceType, designStorm, scenarios))
+    useEffect(()=>console.log(duration, soilType, surfaceType, designStorm))
     const marks= [{value: 0,label: "0"},{value: 1,label: "1"},{value: 2,label: '2'},{value: 3,label: '3'},{value: 4,label: '4'},{value: 5,label: '5'}]
-    const [scenarios, setScenarios] = useState(null)
-    async function generateScenarios(duration, soilType, surfaceType, designStorm) {
-        console.log("generate is run")
-        const result = DATA.filter(d=>{
-            return d["designStorm"] === designStorm
-            && d["duration"] === duration
-            && d["soilType"] === soilType
-            && d["surface"] === surfaceType
-            && d["reliability"] === 1
-        })
-        console.log("result",result)
-        const temp = DATA.filter(d=>{
-                return d["designStorm"] === designStorm 
-                && d["duration"] === duration
-                && d["soilType"] === soilType
-                && d["surface"] === surfaceType
-                && d["reliability"] === 1
-        })
-        console.log('temp', temp)
-
-        // const res = await DATA.filter(d=>{
-        //     return d["designStorm"] === designStorm 
-        //     && d["duration"] === duration
-        //     && d["soilType"] === soilType
-        //     && d["surface"] === surfaceType
-        //     && d["reliability"] === 1
-        // })
-
-        setScenarios(
-            DATA.filter(d=>{
-                return d["designStorm"] === designStorm 
-                && d["duration"] === duration
-                && d["soilType"] === soilType
-                && d["surface"] === surfaceType
-                && d["reliability"] === 1
-            })
-        )
-        console.log("generate finished run")
-    }
+    
     
     return (
         
         <Stack spacing={2}>
-            {console.log(DATA)}
             <Box sx={{ width: 300, ml:1 }}>
                 <Typography gutterBottom>Design Storm (inches)</Typography>
                 <Slider
@@ -118,7 +79,7 @@ const InputPanel = () => {
                 </RadioGroup>
             </FormControl>     
             <br />
-            <Button sx={{width: 120, mt:8}} variant="contained" onClick={()=>generateScenarios(duration, soilType, surfaceType, designStorm)} >GENERATE</Button>
+            <Button sx={{width: 120, mt:8}} variant="contained" onClick={()=>generateScenarios(DATA, duration, soilType, surfaceType, designStorm)} >GENERATE</Button>
         </Stack>
     )
 }
