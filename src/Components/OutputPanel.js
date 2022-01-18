@@ -11,6 +11,13 @@ const OutputPanel = ({initialDepth, initialRatio}) => {
     const changeDepth = e => setDepth(Number.parseInt(e.target.value))
     const [loadingRatio, setLoadingRatio] = useState(initialRatio);
     const changeRatio = e => setLoadingRatio(Number.parseFloat(e.target.value))
+
+    //re-initiate output panel everytime GENERATE button is pressed
+    useEffect(()=>{
+        setDepth(initialDepth)
+        setLoadingRatio(initialRatio)
+    },[initialDepth, initialRatio])
+
     return (
         <Stack>
             {console.log("initialDepth", initialDepth)}
@@ -19,6 +26,7 @@ const OutputPanel = ({initialDepth, initialRatio}) => {
             {console.log("loadingRatio", loadingRatio)}
             <br />
             <br />
+            
             <FormControl component="fieldset">
                 <FormLabel component="legend">Depth (inches)</FormLabel>
                 <RadioGroup value={depth} onChange={changeDepth} row aria-label="depth" name="row-radio-buttons-group">
@@ -28,6 +36,7 @@ const OutputPanel = ({initialDepth, initialRatio}) => {
                     <FormControlLabel value={30} control={<Radio />} label="30" />
                 </RadioGroup>
             </FormControl>
+            
 
             <FormControl component="fieldset">
                 <FormLabel component="legend">Loading Ratio</FormLabel>
