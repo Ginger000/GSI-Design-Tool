@@ -49,14 +49,14 @@ const InputPanel = ({generateScenarios}) => {
             
             <FormControl component="fieldset">
                 <FormLabel component="legend">Reduction Amount</FormLabel>
-                <RadioGroup row aria-label="Reduction Amount" name="row-radio-buttons-group">
+                <RadioGroup defaultValue={80} row aria-label="Reduction Amount" name="row-radio-buttons-group">
                     <FormControlLabel value={80} control={<Radio />} label="80%" />               
                 </RadioGroup>
             </FormControl>
         
             <FormControl component="fieldset">
                 <FormLabel component="legend">Duration</FormLabel>
-                <RadioGroup value={duration} onChange={changeDuration}  row aria-label="duration" name="row-radio-buttons-group">
+                <RadioGroup defaultValue={2} value={duration} onChange={changeDuration}  row aria-label="duration" name="row-radio-buttons-group">
                     <FormControlLabel value={2} control={<Radio />} label="2 Hours" />
                     <FormControlLabel value={24} control={<Radio />} label="24 Hours" />
                 </RadioGroup>

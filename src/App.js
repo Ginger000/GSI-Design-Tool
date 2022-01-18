@@ -16,18 +16,17 @@ function App() {
           && d["surface"] === surfaceType
           && d["reliability"] === 1
         })
-        // result.sort((a,b)=>{
-        //   if(a.loadingRatio === b.loadingRatio){
-        //     return a.depth - b.depth
-        //   }
-        //   return a.loadingRatio-b.loadingRatio
-        // });
-        // console.log("result[0]",result[0])
+        result.sort((a,b)=>{
+          if(a.loadingRatio === b.loadingRatio){
+            return a.depth - b.depth
+          }
+          return a.loadingRatio-b.loadingRatio
+        });
+        console.log("result[0]",result[0])
         console.log("result",result)
         return result
       }
     )      
-    console.log("kkkkkk", scenarios) 
   }
 
   return (
@@ -35,7 +34,7 @@ function App() {
       <InputPanel generateScenarios={generateScenarios}/>
       
       {/* {scenarios ? <OutputPanel initialDepth = {scenarios[0]["depth"]} initialRatio = {scenarios[0]["loadingRatio"]} /> : " "} */}
-      {scenarios ? <OutputPanel initialDepth = {12} initialRatio = "1:5" /> : " "}
+      {scenarios ? <OutputPanel initialDepth = {[scenarios[0].depth]} initialRatio = {[scenarios[0].loadingRatio]} /> : " "}
 
     </>
   );
