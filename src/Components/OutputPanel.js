@@ -12,21 +12,20 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
     const changeDepth = e => {
         let newDepth = Number.parseInt(e.target.value)
         //check whether newDepth is out of bound
-        if(newDepth < depthScope) {
-            setDepth(depthScope)
+        if(newDepth < depthBound) {
+            setDepth(depthBound)
             setDepthWarning(true)
         } else {
             setDepth(newDepth)
             setDepthWarning(false)
         } 
-        
     } 
     const [loadingRatio, setLoadingRatio] = useState(initialRatio);
     const changeRatio = e => {
         let newRatio = Number.parseFloat(e.target.value)
         //check the whether newRatio is out of bound
-        if(newRatio < ratioScope){
-            setLoadingRatio(ratioScope)
+        if(newRatio < ratioBound){
+            setLoadingRatio(ratioBound)
             setRatioWarning(true)
         } else {
             setLoadingRatio(newRatio)
@@ -35,8 +34,8 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
     } 
     const [depthWarning, setDepthWarning] = useState(false)
     const [ratioWarning, setRatioWarning] = useState(false)
-    const [depthScope, setDepthScope] = useState(null)
-    const [ratioScope, setRatioScope] = useState(null)
+    const [depthBound, setDepthBound] = useState(null)
+    const [ratioBound, setRatioBound] = useState(null)
 
     //re-initiate output panel everytime GENERATE button is pressed
     useEffect(()=>{
@@ -53,13 +52,13 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
     //withdraw the warning is the current loadingRatio is within the new bound
     useEffect(()=>{
         getBound(depth, loadingRatio, "depth", "loadingRatio")  
-        if(loadingRatio >= ratioScope) setRatioWarning(false)
+        if(loadingRatio >= ratioBound) setRatioWarning(false)
     },[depth])
 
     //get the bound of depth
     useEffect(()=>{
         getBound(loadingRatio, depth, "loadingRatio", "depth")
-        if(depth >= depthScope) setDepthWarning(false)
+        if(depth >= depthBound) setDepthWarning(false)
     }, [loadingRatio])
 
     //when change a parameter
@@ -73,35 +72,31 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
     
     //get the bound of controlled
     const getBound = (changed, controlled, changedStr, controlledStr) => {
-        let tempScope = []
+        let tempBound = []
         //we can use binary search and insert if scenarios is a large collection
         for(let s of scenarios){
             if(s[controlledStr] === controlled){
-                tempScope.push(s[changedStr])
+                tempBound.push(s[changedStr])
             }
         }
-        tempScope.sort((a,b)=>a-b)
-        console.log("TEMPSCOPE",tempScope)
+        tempBound.sort((a,b)=>a-b)
+        console.log("tempBound",tempBound)
         if(changedStr ==="depth") {
-            setDepthScope(tempScope[0])
+            setDepthBound(tempBound[0])
         } 
-        else if(changedStr === "loadingRatio") setRatioScope(tempScope[0])
+        else if(changedStr === "loadingRatio") setRatioBound(tempBound[0])
     }
 
     return (
         <Stack>
-            {console.log("initialDepth", initialDepth)}
-            {console.log("initialRatio", initialRatio)}
-            {console.log("depth", depth)}
-            {console.log("loadingRatio", loadingRatio)}
             <br />
             <br />
-            {/* {console.log("prev", prevDepth, "now", depth)} */}
+            {console.log("depthBound", depthBound, "ratioBound", ratioBound)}
             <FormControl component="fieldset">
                 <FormLabel component="legend">Depth (inches)</FormLabel>
                 {depthWarning ? 
                     <Alert variant="outlined" severity="warning" > 
-                        The depth cannot be smaller than {depthScope} inches in terms of your inputs and current loading ratio 
+                        The depth cannot be smaller than {depthBound} inches in terms of your inputs and current loading ratio 
                     </Alert> :
                     ""
                 }
@@ -118,7 +113,7 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
                     <FormLabel component="legend">Loading Ratio</FormLabel>
                     {ratioWarning ? 
                         <Alert variant="outlined" severity="warning" > 
-                            The loading ratio cannot be smaller than {ratioScope} in terms of your inputs and current GSI depth
+                            The loading ratio cannot be smaller than {ratioBound} in terms of your inputs and current GSI depth
                         </Alert> :
                         ""
                     }

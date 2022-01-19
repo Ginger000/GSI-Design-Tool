@@ -38,7 +38,7 @@ const InputPanel = ({handleSetScenarios}) => {
         return `${designStorm} inches`
     }
     
-    useEffect(()=>console.log(duration, soilType, surfaceType, designStorm))
+    useEffect(()=>console.log("Inputs are", duration, soilType, surfaceType, designStorm))
     const marks= [{value: 0,label: "0"},{value: 1,label: "1"},{value: 2,label: '2'},{value: 3,label: '3'},{value: 4,label: '4'},{value: 5,label: '5'}]
     
     const [durationHelperText, setDurationHelperText] = useState('');
@@ -65,8 +65,6 @@ const InputPanel = ({handleSetScenarios}) => {
             }
             return a.loadingRatio-b.loadingRatio
           });
-          console.log("result[0]",result[0])
-          console.log("result",result)
           return result
         }
       )
