@@ -38,16 +38,11 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
     const [ratioBound, setRatioBound] = useState([0])
 
     //re-initiate output panel everytime GENERATE button is pressed
+    //pass scenarios here is for reset output everytime click generate
     useEffect(()=>{
         setDepth(initialDepth)
         setLoadingRatio(initialRatio)
-    },[initialDepth, initialRatio])
-
-    
-    // useEffect(()=>{
-    //     getBound(depth, loadingRatio, "depth", "loadingRatio")
-    //     getBound(loadingRatio, depth, "loadingRatio", "depth")
-    // },[])
+    },[initialDepth, initialRatio, scenarios])
 
     //get the new bound of laodingRatio
     //withdraw the warning is the current loadingRatio is within the new bound
@@ -61,15 +56,6 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
         getBound(loadingRatio, depth, "loadingRatio", "depth")
         if(depth >= depthBound[0]) setDepthWarning(false)
     }, [loadingRatio])
-
-    //when change a parameter
-    //the bound of "the changed" won't change because its scope is decided by the controlled
-    //the bound of "the controlled" possibly change because its scope is decided by the changed
-    //hence, we do need to check two things when change one parameter
-    //Step1 - calculate the bound of "the changed", 
-    //check if "the changed" is out of bound 
-    //Step2 - After step1, recalculate the new bound of "the controlled",
-    //check if the current value of "the controlled" is out of the new bound
     
     //get the bound of controlled
     const getBound = (changed, controlled, changedStr, controlledStr) => {
@@ -132,12 +118,10 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
                         <FormControlLabel disabled value={0.33} control={<Radio />} label="1:3" />
                         <FormControlLabel disabled value={0.5} control={<Radio />} label="1:2" />
                         <FormControlLabel value={1} control={<Radio />} label="1:1" />
-                        <FormControlLabel value={0} control={<Radio />} label="Direct Infiltration" />
+                        <FormControlLabel value={2} control={<Radio />} label="Direct Infiltration" />
                     </RadioGroup>
                 </FormControl>
-            }
-
-            
+            }        
         </Stack>
     )
 }

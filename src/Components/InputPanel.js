@@ -10,7 +10,7 @@ import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Stack } from '@mui/material';
-import DATA from "../Data/newFeedbackSearch_all.json"
+import DATA from "../Data/newFeedbackSearch_all_setDirectInfiltrationAs2.json"
 
 const InputPanel = ({handleSetScenarios}) => {
     const [duration, setDuration] = useState(null)
@@ -81,10 +81,9 @@ const InputPanel = ({handleSetScenarios}) => {
         setSurfaceHelperText('Please select the surface type .');
         setSurfaceError(true);
       }
-    } 
-          
+    }  
   }
-    
+
     return (
         <form onSubmit={generateScenarios} >
         <Stack spacing={2}>
