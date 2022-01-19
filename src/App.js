@@ -19,7 +19,7 @@ function App() {
       />
       
       {/* {scenarios ? <OutputPanel initialDepth = {scenarios[0]["depth"]} initialRatio = {scenarios[0]["loadingRatio"]} /> : " "} */}
-      {scenarios ? <OutputPanel initialDepth = {scenarios[0].depth} initialRatio = {scenarios[0].loadingRatio} surface={scenarios[0].surface} /> : " "}
+      {scenarios ? <OutputPanel initialDepth = {scenarios[0].depth} initialRatio = {scenarios[0].loadingRatio} surface={scenarios[0].surface} scenarios={scenarios} /> : " "}
 
     </>
   );

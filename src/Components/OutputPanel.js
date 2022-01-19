@@ -1,22 +1,92 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { Stack } from '@mui/material';
+import Alert from '@mui/material/Alert';
 
-const OutputPanel = ({initialDepth, initialRatio, surface}) => {
+const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
     const [depth, setDepth] = useState(initialDepth)
-    const changeDepth = e => setDepth(Number.parseInt(e.target.value))
+    const changeDepth = e => {
+        let newDepth = Number.parseInt(e.target.value)
+        //check whether newDepth is out of bound
+        if(newDepth < depthScope) {
+            setDepth(depthScope)
+            setDepthWarning(true)
+        } else {
+            setDepth(newDepth)
+            setDepthWarning(false)
+        } 
+        
+    } 
     const [loadingRatio, setLoadingRatio] = useState(initialRatio);
-    const changeRatio = e => setLoadingRatio(Number.parseFloat(e.target.value))
+    const changeRatio = e => {
+        let newRatio = Number.parseFloat(e.target.value)
+        //check the whether newRatio is out of bound
+        if(newRatio < ratioScope){
+            setLoadingRatio(ratioScope)
+            setRatioWarning(true)
+        } else {
+            setLoadingRatio(newRatio)
+            setRatioWarning(false)
+        }
+    } 
+    const [depthWarning, setDepthWarning] = useState(false)
+    const [ratioWarning, setRatioWarning] = useState(false)
+    const [depthScope, setDepthScope] = useState(null)
+    const [ratioScope, setRatioScope] = useState(null)
 
     //re-initiate output panel everytime GENERATE button is pressed
     useEffect(()=>{
         setDepth(initialDepth)
         setLoadingRatio(initialRatio)
     },[initialDepth, initialRatio])
+
+    useEffect(()=>{
+        getBound(depth, loadingRatio, "depth", "loadingRatio")
+        getBound(loadingRatio, depth, "loadingRatio", "depth")
+    },[])
+
+    //get the new bound of laodingRatio
+    //withdraw the warning is the current loadingRatio is within the new bound
+    useEffect(()=>{
+        getBound(depth, loadingRatio, "depth", "loadingRatio")  
+        if(loadingRatio >= ratioScope) setRatioWarning(false)
+    },[depth])
+
+    //get the bound of depth
+    useEffect(()=>{
+        getBound(loadingRatio, depth, "loadingRatio", "depth")
+        if(depth >= depthScope) setDepthWarning(false)
+    }, [loadingRatio])
+
+    //when change a parameter
+    //the bound of "the changed" won't change because its scope is decided by the controlled
+    //the bound of "the controlled" possibly change because its scope is decided by the changed
+    //hence, we do need to check two things when change one parameter
+    //Step1 - calculate the bound of "the changed", 
+    //check if "the changed" is out of bound 
+    //Step2 - After step1, recalculate the new bound of "the controlled",
+    //check if the current value of "the controlled" is out of the new bound
+    
+    //get the bound of controlled
+    const getBound = (changed, controlled, changedStr, controlledStr) => {
+        let tempScope = []
+        //we can use binary search and insert if scenarios is a large collection
+        for(let s of scenarios){
+            if(s[controlledStr] === controlled){
+                tempScope.push(s[changedStr])
+            }
+        }
+        tempScope.sort((a,b)=>a-b)
+        console.log("TEMPSCOPE",tempScope)
+        if(changedStr ==="depth") {
+            setDepthScope(tempScope[0])
+        } 
+        else if(changedStr === "loadingRatio") setRatioScope(tempScope[0])
+    }
 
     return (
         <Stack>
@@ -26,9 +96,15 @@ const OutputPanel = ({initialDepth, initialRatio, surface}) => {
             {console.log("loadingRatio", loadingRatio)}
             <br />
             <br />
-            
+            {/* {console.log("prev", prevDepth, "now", depth)} */}
             <FormControl component="fieldset">
                 <FormLabel component="legend">Depth (inches)</FormLabel>
+                {depthWarning ? 
+                    <Alert variant="outlined" severity="warning" > 
+                        The depth cannot be smaller than {depthScope} inches in terms of your inputs and current loading ratio 
+                    </Alert> :
+                    ""
+                }
                 <RadioGroup value={depth} onChange={changeDepth} row aria-label="depth" name="row-radio-buttons-group">
                     <FormControlLabel value={12} control={<Radio />} label="12" />
                     <FormControlLabel value={18} control={<Radio />} label="18" />
@@ -40,6 +116,12 @@ const OutputPanel = ({initialDepth, initialRatio, surface}) => {
             {surface === "planted" ?
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Loading Ratio</FormLabel>
+                    {ratioWarning ? 
+                        <Alert variant="outlined" severity="warning" > 
+                            The loading ratio cannot be smaller than {ratioScope} in terms of your inputs and current GSI depth
+                        </Alert> :
+                        ""
+                    }
                     <RadioGroup value={loadingRatio} onChange={changeRatio} row aria-label="loading ratio" name="row-radio-buttons-group">
                         <FormControlLabel value={0.2} control={<Radio />} label="1:5" />
                         <FormControlLabel value={0.33} control={<Radio />} label="1:3" />
