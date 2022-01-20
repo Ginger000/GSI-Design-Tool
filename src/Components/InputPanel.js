@@ -11,22 +11,23 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Stack } from '@mui/material';
 import DATA from "../Data/newFeedbackSearch_all_setDirectInfiltrationAs2.json"
+import Alert from '@mui/material/Alert';
 
-const InputPanel = ({handleSetScenarios}) => {
-    const [duration, setDuration] = useState(null)
+const InputPanel = ({handleSetScenarios, duration ,setDuration, soilType, setSoilType, surfaceType, setSurfaceType, feedbackScenarios, stormRecommend}) => {
+    
     //https://github.com/mui-org/material-ui/issues/8180
     const changeDuration = e => {
         setDuration(Number.parseInt(e.target.value))
         setDurationHelperText('');
         setDurationError(false);
     } 
-    const [soilType, setSoilType] = useState(null)
+    
     const changeSoilType = e => {
         setSoilType(e.target.value)
         setSoilHelperText('');
         setSoilError(false);
     } 
-    const [surfaceType, setSurfaceType] = useState(null)
+    
     const changeSurfaceType = e => {
         setSurfaceType(e.target.value)
         setSurfaceHelperText('');
@@ -47,6 +48,9 @@ const InputPanel = ({handleSetScenarios}) => {
     const [durationError, setDurationError] = useState(false);
     const [soilError, setSoilError] = useState(false);
     const [surfaceError, setSurfaceError] = useState(false);
+
+    
+
 
   const generateScenarios = (event) => {
     event.preventDefault();
@@ -89,6 +93,14 @@ const InputPanel = ({handleSetScenarios}) => {
         <Stack spacing={2}>
             <Box sx={{ width: 300, ml:1 }}>
                 <Typography gutterBottom>Design Storm (inches)</Typography>
+                {stormRecommend ? 
+                    <Alert variant="outlined" severity="info" > 
+                        You could adjust the design storm within the range 
+                        {feedbackScenarios[0]["designStorm"]} inches to 
+                        {feedbackScenarios[feedbackScenarios.length-1]["designStorm"]} inches 
+                    </Alert> :
+                    ""
+                }
                 <Slider
                     aria-label="Design Storm"
                     defaultValue={0.1}

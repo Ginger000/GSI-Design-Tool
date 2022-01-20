@@ -6,8 +6,9 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { Stack } from '@mui/material';
 import Alert from '@mui/material/Alert';
+import DATA from "../Data/newFeedbackSearch_all_setDirectInfiltrationAs2.json"
 
-const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
+const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetFeedbackScenarios, duration,soilType, surfaceType, isStormRecommend}) => {
     const [depth, setDepth] = useState(initialDepth)
     const changeDepth = e => {
         let newDepth = Number.parseInt(e.target.value)
@@ -37,6 +38,21 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
     const [depthBound, setDepthBound] = useState([0])
     const [ratioBound, setRatioBound] = useState([0])
 
+    const generateFeedbackScenarios = ()=>{
+        handleSetFeedbackScenarios(()=>{
+            const result = DATA.filter(d=>{
+                return d["depth"] === depth 
+                && d["loadingRatio"] === loadingRatio
+                && d["reliability"] === 1 
+                && d["soilType"] === soilType
+                && d["duration"] === duration 
+                && d["surface"] === surfaceType
+                })
+            result.sort((a,b)=>a["designStorm"]-b["designStorm"])
+            return result
+        })  
+    }
+
     //re-initiate output panel everytime GENERATE button is pressed
     //pass scenarios here is for reset output everytime click generate
     useEffect(()=>{
@@ -47,18 +63,24 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios}) => {
     //get the new bound of laodingRatio
     //withdraw the warning is the current loadingRatio is within the new bound
     useEffect(()=>{
-        getBound(depth, loadingRatio, "depth", "loadingRatio")  
+        getBound(depth, "depth", "loadingRatio")  
         if(loadingRatio >= ratioBound[0]) setRatioWarning(false)
+        //get design storm bound and display recommendation
+        //from the ux perspective, the display INFO would suggest users to play with design storm
+        generateFeedbackScenarios()
+        isStormRecommend()
     },[depth])
 
     //get the bound of depth
     useEffect(()=>{
-        getBound(loadingRatio, depth, "loadingRatio", "depth")
+        getBound(loadingRatio, "loadingRatio", "depth")
         if(depth >= depthBound[0]) setDepthWarning(false)
+        //get design storm bound and display recommendation
+        generateFeedbackScenarios()
     }, [loadingRatio])
     
     //get the bound of controlled
-    const getBound = (changed, controlled, changedStr, controlledStr) => {
+    const getBound = (changed, changedStr, controlledStr) => {
         let tempBound = []
         //we can use binary search and insert if scenarios is a large collection
         for(let s of scenarios){
