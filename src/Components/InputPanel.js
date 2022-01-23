@@ -92,11 +92,11 @@ const InputPanel = ({handleSetScenarios, duration ,setDuration, soilType, setSoi
         <form onSubmit={generateScenarios} >
         <Stack spacing={2}>
             <Box sx={{ width: 300, ml:1 }}>
-                <Typography gutterBottom>Design Storm (inches)</Typography>
-                {stormRecommend ? 
+                <Typography gutterBottom>Design Storm (inches)</Typography> 
+                {stormRecommend && feedbackScenarios ? 
                     <Alert variant="outlined" severity="info" > 
-                        You could adjust the design storm within the range 
-                        {feedbackScenarios[0]["designStorm"]} inches to 
+                        You could adjust the design storm within the range {" "}
+                        {feedbackScenarios[0]["designStorm"]} inches to {" "}
                         {feedbackScenarios[feedbackScenarios.length-1]["designStorm"]} inches 
                     </Alert> :
                     ""
