@@ -93,13 +93,13 @@ const InputPanel = ({handleSetScenarios, duration ,setDuration, soilType, setSoi
         <Stack spacing={2}>
             <Box sx={{ width: 300, ml:1 }}>
                 <Typography gutterBottom>Design Storm (inches)</Typography> 
-                {stormRecommend && feedbackScenarios ? 
+                {stormRecommend && feedbackScenarios!== null ? 
                     <Alert variant="outlined" severity="info" > 
                         You could adjust the design storm within the range {" "}
                         {feedbackScenarios[0]["designStorm"]} inches to {" "}
                         {feedbackScenarios[feedbackScenarios.length-1]["designStorm"]} inches 
                     </Alert> :
-                    ""
+                    " "
                 }
                 <Slider
                     aria-label="Design Storm"

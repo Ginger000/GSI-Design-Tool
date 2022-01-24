@@ -8,8 +8,8 @@ import { Stack } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import DATA from "../Data/newFeedbackSearch_all_setDirectInfiltrationAs2.json"
 
-const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetFeedbackScenarios, duration,soilType, surfaceType, isStormRecommend}) => {
-    const [depth, setDepth] = useState(initialDepth)
+const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetFeedbackScenarios, duration,soilType, surfaceType, isStormRecommend, depth, setDepth, loadingRatio, setLoadingRatio}) => {
+    
     const changeDepth = e => {
         let newDepth = Number.parseInt(e.target.value)
         //check whether newDepth is out of bound
@@ -21,7 +21,7 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
             setDepthWarning(false)
         } 
     } 
-    const [loadingRatio, setLoadingRatio] = useState(initialRatio);
+    
     const changeRatio = e => {
         let newRatio = Number.parseFloat(e.target.value)
         //check the whether newRatio is out of bound
@@ -39,7 +39,8 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
     const [ratioBound, setRatioBound] = useState([0])
 
     const generateFeedbackScenarios = ()=>{
-        handleSetFeedbackScenarios(()=>{
+        handleSetFeedbackScenarios((depth = initialDepth, loadingRatio = initialRatio)=>{
+            console.log('hahahahhahahah', depth, loadingRatio, soilType, duration, surfaceType)
             const result = DATA.filter(d=>{
                 return d["depth"] === depth 
                 && d["loadingRatio"] === loadingRatio
@@ -56,9 +57,12 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
     //re-initiate output panel everytime GENERATE button is pressed
     //pass scenarios here is for reset output everytime click generate
     useEffect(()=>{
-        setDepth(initialDepth)
-        setLoadingRatio(initialRatio)
-    },[initialDepth, initialRatio, scenarios])
+        if(scenarios) {
+            setDepth(initialDepth)
+            setLoadingRatio(initialRatio)
+            generateFeedbackScenarios()
+        }   
+    },[scenarios])
 
     //get the new bound of laodingRatio
     //withdraw the warning is the current loadingRatio is within the new bound

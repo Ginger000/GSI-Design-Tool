@@ -20,6 +20,25 @@ function App() {
   const [soilType, setSoilType] = useState(null)
   const [surfaceType, setSurfaceType] = useState(null)
   const [stormRecommend, isStormRecommend] = useState(false);
+  const [initialDepth, setInitialDepth] = useState(null)
+  const [initialRatio, setInitialRatio] = useState(null)
+  const [depth, setDepth] = useState(initialDepth)
+  const [loadingRatio, setLoadingRatio] = useState(initialRatio);
+  useEffect(()=>{
+    if(scenarios) {
+      setInitialDepth(scenarios[0].depth)
+      setInitialRatio(scenarios[0].loadingRatio)
+    }
+    console.log("initialDepth",initialDepth, initialRatio)
+  }, [scenarios])
+
+  const handleSetDepth = (input) => {
+    setDepth(input)
+  }
+  const handleSetLoadingRatio = (input) => {
+    setLoadingRatio(input)
+  }
+
   const handleIsStormRecommend = ()=>{
     isStormRecommend(true)
   }
@@ -55,10 +74,10 @@ function App() {
             stormRecommend={stormRecommend}
           />
           
-          {scenarios ? 
+          {initialDepth && initialRatio ? 
           <OutputPanel 
-            initialDepth = {scenarios[0].depth} 
-            initialRatio = {scenarios[0].loadingRatio} 
+            initialDepth = {initialDepth} 
+            initialRatio = {initialRatio} 
             surface={scenarios[0].surface} 
             scenarios={scenarios} 
             handleSetFeedbackScenarios={handleSetFeedbackScenarios} 
@@ -66,6 +85,10 @@ function App() {
             soilType={soilType}
             surfaceType={surfaceType}
             isStormRecommend={handleIsStormRecommend}
+            depth={depth}
+            setDepth={handleSetDepth}
+            loadingRatio={loadingRatio}
+            setLoadingRatio={handleSetLoadingRatio}
           /> 
           : " "}
         </Grid>
