@@ -46,18 +46,21 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
     const [ratioBound, setRatioBound] = useState([0])
 
     const generateFeedbackScenarios = ()=>{
-        handleSetFeedbackScenarios(()=>{
-            const result = DATA.filter(d=>{
-                return d["depth"] === depth 
-                && d["loadingRatio"] === loadingRatio
-                && d["reliability"] === 1 
-                && d["soilType"] === soilType
-                && d["duration"] === duration 
-                && d["surface"] === surfaceType
-                })
-            result.sort((a,b)=>a["designStorm"]-b["designStorm"])
-            return result
-        })  
+        if(scenarios) {
+            handleSetFeedbackScenarios(()=>{
+                const result = DATA.filter(d=>{
+                    return d["depth"] === depth 
+                    && d["loadingRatio"] === loadingRatio
+                    && d["reliability"] === 1 
+                    && d["soilType"] === soilType
+                    && d["duration"] === duration 
+                    && d["surface"] === surfaceType
+                    })
+                result.sort((a,b)=>a["designStorm"]-b["designStorm"])
+                return result
+            })  
+        }
+        
     }
 
     //re-initiate output panel everytime GENERATE button is pressed
@@ -126,56 +129,60 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
                     <OrbitControls makeDefault />
                 </Canvas>
             </Grid>
+
             <Grid item xs={12} md = {12} lg={12}>
-                <Stack>
-                    <br />
-                    <br />
-                    {console.log("depthBound", depthBound, "ratioBound", ratioBound)}
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">Depth (inches)</FormLabel>
-                        {depthWarning ? 
-                            <Alert variant="outlined" severity="warning" > 
-                                The depth cannot be smaller than {depthBound[0]} inches in terms of your inputs and current loading ratio 
-                            </Alert> :
-                            ""
-                        }
-                        <RadioGroup value={depth} onChange={changeDepth} row aria-label="depth" name="row-radio-buttons-group">
-                            <FormControlLabel value={12} control={<Radio />} label="12" />
-                            <FormControlLabel value={18} control={<Radio />} label="18" />
-                            <FormControlLabel value={24} control={<Radio />} label="24" />
-                            <FormControlLabel value={30} control={<Radio />} label="30" />
-                        </RadioGroup>
-                    </FormControl>
-                    
-                    {surface === "planted" ?
+                {scenarios? 
+                    <Stack>
+                        <br />
+                        <br />
+                        {console.log("depthBound", depthBound, "ratioBound", ratioBound)}
                         <FormControl component="fieldset">
-                            <FormLabel component="legend">Loading Ratio</FormLabel>
-                            {ratioWarning ? 
+                            <FormLabel component="legend">Depth (inches)</FormLabel>
+                            {depthWarning ? 
                                 <Alert variant="outlined" severity="warning" > 
-                                    The loading ratio cannot be smaller than {ratioBound[0]} in terms of your inputs and current GSI depth
+                                    The depth cannot be smaller than {depthBound[0]} inches in terms of your inputs and current loading ratio 
                                 </Alert> :
                                 ""
                             }
-                            <RadioGroup value={loadingRatio} onChange={changeRatio} row aria-label="loading ratio" name="row-radio-buttons-group">
-                                <FormControlLabel value={0.2} control={<Radio />} label="1:5" />
-                                <FormControlLabel value={0.33} control={<Radio />} label="1:3" />
-                                <FormControlLabel value={0.5} control={<Radio />} label="1:2" />
-                                <FormControlLabel disabled value={1} control={<Radio />} label="1:1" />
-                                <FormControlLabel disabled value={0} control={<Radio />} label="Direct Infiltration" />
-                            </RadioGroup>
-                        </FormControl> : 
-                        <FormControl component="fieldset">
-                        <FormLabel component="legend">Loading Ratio</FormLabel>
-                            <RadioGroup value={loadingRatio} onChange={changeRatio} row aria-label="loading ratio" name="row-radio-buttons-group">
-                                <FormControlLabel disabled value={0.2} control={<Radio />} label="1:5" />
-                                <FormControlLabel disabled value={0.33} control={<Radio />} label="1:3" />
-                                <FormControlLabel disabled value={0.5} control={<Radio />} label="1:2" />
-                                <FormControlLabel value={1} control={<Radio />} label="1:1" />
-                                <FormControlLabel value={2} control={<Radio />} label="Direct Infiltration" />
+                            <RadioGroup value={depth} onChange={changeDepth} row aria-label="depth" name="row-radio-buttons-group">
+                                <FormControlLabel value={12} control={<Radio />} label="12" />
+                                <FormControlLabel value={18} control={<Radio />} label="18" />
+                                <FormControlLabel value={24} control={<Radio />} label="24" />
+                                <FormControlLabel value={30} control={<Radio />} label="30" />
                             </RadioGroup>
                         </FormControl>
-                    }        
-                </Stack>
+                        
+                        {surface === "planted" ?
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">Loading Ratio</FormLabel>
+                                {ratioWarning ? 
+                                    <Alert variant="outlined" severity="warning" > 
+                                        The loading ratio cannot be smaller than {ratioBound[0]} in terms of your inputs and current GSI depth
+                                    </Alert> :
+                                    ""
+                                }
+                                <RadioGroup value={loadingRatio} onChange={changeRatio} row aria-label="loading ratio" name="row-radio-buttons-group">
+                                    <FormControlLabel value={0.2} control={<Radio />} label="1:5" />
+                                    <FormControlLabel value={0.33} control={<Radio />} label="1:3" />
+                                    <FormControlLabel value={0.5} control={<Radio />} label="1:2" />
+                                    <FormControlLabel disabled value={1} control={<Radio />} label="1:1" />
+                                    <FormControlLabel disabled value={0} control={<Radio />} label="Direct Infiltration" />
+                                </RadioGroup>
+                            </FormControl> : 
+                            <FormControl component="fieldset">
+                            <FormLabel component="legend">Loading Ratio</FormLabel>
+                                <RadioGroup value={loadingRatio} onChange={changeRatio} row aria-label="loading ratio" name="row-radio-buttons-group">
+                                    <FormControlLabel disabled value={0.2} control={<Radio />} label="1:5" />
+                                    <FormControlLabel disabled value={0.33} control={<Radio />} label="1:3" />
+                                    <FormControlLabel disabled value={0.5} control={<Radio />} label="1:2" />
+                                    <FormControlLabel value={1} control={<Radio />} label="1:1" />
+                                    <FormControlLabel value={2} control={<Radio />} label="Direct Infiltration" />
+                                </RadioGroup>
+                            </FormControl>
+                        }        
+                    </Stack>
+                    : ''
+                }
             </Grid>
         </Grid>
     )
