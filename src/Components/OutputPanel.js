@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, Suspense} from 'react'
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -116,6 +116,7 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
         <Grid container spacing={2}>
             <Grid item height={500} xs={12} md = {12} lg={12}>
                 <Canvas colorManagement>
+                <Suspense fallback={null}>
                     <OrthographicCamera makeDefault position={[10, 5, -3]} zoom={60} />
                     <ambientLight intensity={0.3} />
                     <directionalLight position={[-8, 8, -5]} castShadow intensity={1} shadow-camera-far={70} />
@@ -127,6 +128,7 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
                         <GSIbase position={[0,0,0]} args={[4,3,6]} color='pink' />
                     </group>
                     <OrbitControls makeDefault />
+                    </Suspense>
                 </Canvas>
             </Grid>
 
