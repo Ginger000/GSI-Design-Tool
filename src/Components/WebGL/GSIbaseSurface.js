@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from 'react';
-import { useSpring, animated, config} from '@react-spring/three'
+import { useSpring, animated} from '@react-spring/three'
 
 const GSIbaseSurface = ({position, args, color, GSIratio}) => {
     const mesh = useRef(null);

@@ -1,10 +1,10 @@
-import { useSpring, animated,config } from '@react-spring/three'
-import React, {useState, useRef, useEffect} from 'react';
+import { useSpring, animated} from '@react-spring/three'
+import React, {useRef, useEffect} from 'react';
 
 const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => {
     const mesh = useRef(null);
     useEffect(()=>{
-        mesh.current.geometry.translate(0, 1.5, 3)
+        mesh.current.geometry.translate(0, 1.5, 3.01)
     },[])
     // let a = (GSIRatio/(GSIRatio+1)).toFixed(2)
     const {GSIScale} = useSpring({

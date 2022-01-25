@@ -171,6 +171,12 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
                             </FormControl> : 
                             <FormControl component="fieldset">
                             <FormLabel component="legend">Loading Ratio</FormLabel>
+                                {ratioWarning ? 
+                                    <Alert variant="outlined" severity="warning" > 
+                                        The loading ratio only can be direct infiltration in terms of your inputs and current GSI depth
+                                    </Alert> :
+                                    ""
+                                }
                                 <RadioGroup value={loadingRatio} onChange={changeRatio} row aria-label="loading ratio" name="row-radio-buttons-group">
                                     <FormControlLabel disabled value={0.2} control={<Radio />} label="1:5" />
                                     <FormControlLabel disabled value={0.33} control={<Radio />} label="1:3" />
