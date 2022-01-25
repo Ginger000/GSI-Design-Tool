@@ -11,6 +11,9 @@ import Grid from '@mui/material/Grid';
 import { Canvas} from "@react-three/fiber";
 import {OrthographicCamera, OrbitControls} from '@react-three/drei'
 import GSIbase from './WebGL/GSIbase';
+import GSIbaseSurface from './WebGL/GSIbaseSurface';
+import GSIplantedSurface from './WebGL/GSIplantedSurface';
+import GSIdepth from './WebGL/GSIdepth';
 
 const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetFeedbackScenarios, duration,soilType, surfaceType, isStormRecommend}) => {
     const [depth, setDepth] = useState(initialDepth)
@@ -99,19 +102,28 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
         else if(changedStr === "loadingRatio") setDepthBound(tempBound)
     }
 
+    const depthUnit = {
+        12:1,
+        18:1.5,
+        24:2,
+        30:2.5
+    }
+
     return (
         <Grid container spacing={2}>
-            <Grid item xs={12} md = {12} lg={12}>
+            <Grid item height={500} xs={12} md = {12} lg={12}>
                 <Canvas colorManagement>
-                <OrthographicCamera makeDefault position={[10, 5, -3]} zoom={60} />
-                <ambientLight intensity={0.3} />
-                <directionalLight position={[-8, 8, -5]} castShadow intensity={1} shadow-camera-far={70} />
-                <axesHelper args={[10]} />
-                <group position={[0, 0, 3]}>
-                    {/* <GSIbaseSurface position={[0,1.6,0]} args={[4.01,0.31,6.01]} color='lightgrey' /> */}
-                    <GSIbase position={[0,0,0]} args={[4,3,6]} color='pink' />
-                </group>
-                <OrbitControls makeDefault />
+                    <OrthographicCamera makeDefault position={[10, 5, -3]} zoom={60} />
+                    <ambientLight intensity={0.3} />
+                    <directionalLight position={[-8, 8, -5]} castShadow intensity={1} shadow-camera-far={70} />
+                    <axesHelper args={[10]} />
+                    <group position={[0, 0, 3]}>
+                        <GSIdepth position={[0,3,-6.01]} args={[4.001,2.501,6.005]} GSIRatio={loadingRatio} depth={depthUnit[depth]} color='yellow' />
+                        <GSIplantedSurface position={[0,1.6,-6]} args={[4,0.3,6]} GSIRatio={loadingRatio} color='green' />
+                        <GSIbaseSurface position={[0,1.6,0]} GSIratio={loadingRatio} args={[4.01,0.31,6.01]} color='lightgrey' />
+                        <GSIbase position={[0,0,0]} args={[4,3,6]} color='pink' />
+                    </group>
+                    <OrbitControls makeDefault />
                 </Canvas>
             </Grid>
             <Grid item xs={12} md = {12} lg={12}>

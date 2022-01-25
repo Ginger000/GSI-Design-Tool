@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from 'react';
-import { useSpring, animated} from '@react-spring/three'
+import { useSpring, animated, config} from '@react-spring/three'
 
 const GSIbaseSurface = ({position, args, color, GSIratio}) => {
     const mesh = useRef(null);
@@ -7,7 +7,7 @@ const GSIbaseSurface = ({position, args, color, GSIratio}) => {
         mesh.current.geometry.translate(0, 1.5, -3)
     }, [])
     const {hardScale} = useSpring({
-        hardScale:[1,1,1-GSIratio/(GSIratio+1)],
+        hardScale:GSIratio ===2? [1,1,0] : [1,1,1-GSIratio/(GSIratio+1)],
         config:{
             duration:1000
         }

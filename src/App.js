@@ -5,7 +5,10 @@ import OutputPanel from './Components/OutputPanel';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Test from './Components/Test';
-
+import GSIbase from './Components/WebGL/GSIbase';
+import GSIbaseSurface from './Components/WebGL/GSIbaseSurface';
+import { Canvas} from "@react-three/fiber";
+import {OrthographicCamera, OrbitControls} from '@react-three/drei'
 
 function App() {
   useEffect(()=>console.log("scenarios", scenarios, "feedbackScenarios", feedbackScenarios))
@@ -67,7 +70,19 @@ function App() {
               surfaceType={surfaceType}
               isStormRecommend={handleIsStormRecommend}
             /> 
-            : " "}
+            : 
+            <Canvas colorManagement>
+                <OrthographicCamera makeDefault position={[10, 5, -3]} zoom={60} />
+                <ambientLight intensity={0.3} />
+                <directionalLight position={[-8, 8, -5]} castShadow intensity={1} shadow-camera-far={70} />
+                <axesHelper args={[10]} />
+                <group position={[0, 0, 3]}>
+                    <GSIbaseSurface position={[0,1.6,0]} args={[4.01,0.31,6.01]} color='lightgrey' />
+                    <GSIbase position={[0,0,0]} args={[4,3,6]} color='pink' />
+                </group>
+                <OrbitControls makeDefault />
+            </Canvas>
+          }
         </Grid>
         
     </Grid>
