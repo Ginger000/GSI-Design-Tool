@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Stack } from '@mui/material';
+import { Stack} from '@mui/material';
 import DATA from "../Data/newFeedbackSearch_all_setDirectInfiltrationAs2.json"
 import Alert from '@mui/material/Alert';
 
@@ -89,8 +89,9 @@ const InputPanel = ({handleSetScenarios, duration ,setDuration, soilType, setSoi
   }
 
     return (
+      <Box sx={{ display:"flex", mt: 6, justifyContent: 'center' }}>
         <form onSubmit={generateScenarios} >
-        <Stack spacing={2}>
+        <Stack spacing={2} >
             <Box sx={{ width: 300, ml:1 }}>
                 <Typography gutterBottom>Design Storm (inches)</Typography> 
                 {stormRecommend && feedbackScenarios ? 
@@ -155,6 +156,7 @@ const InputPanel = ({handleSetScenarios, duration ,setDuration, soilType, setSoi
         </Stack>
 
         </form>
+        </Box>
     )
 }
 
