@@ -2,25 +2,15 @@ import { useSpring, animated} from '@react-spring/three'
 import React, {useRef, useEffect} from 'react';
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
+import * as THREE from 'three'
 
 const name = (type) => `PavingStones092_1K_${type}.jpg`
 
 const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => {
 
-    const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useLoader(
-        TextureLoader, [
-            name("Color"),
-            name("Displacement"),
-            name("Normal"),
-            name("Roughness"),
-            name("AmbientOcclusion")
-        ] 
-    )
-    colorMap.repeat.set(0.5,0.5)
-    displacementMap.repeat.set(1,1)
-    normalMap.repeat.set(1,1)
-    roughnessMap.repeat.set(1,1)
-    aoMap.repeat.set(1,1)
+    
+
+    
 
 
     const mesh = useRef(null);
@@ -38,6 +28,27 @@ const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => 
             // duration:prevGSIRatio < GSIRatio ? 2000 : 0 
         }
     })
+
+    const {scaleX, scaleY, scaleZ} = GSIScale;
+
+    const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useLoader(
+        TextureLoader, [
+            name("Color"),
+            name("Displacement"),
+            name("Normal"),
+            name("Roughness"),
+            name("AmbientOcclusion")
+        ] 
+    )
+    // colorMap.wrapS = THREE.RepeatWrapping
+    // colorMap.wrapT = THREE.RepeatWrapping
+    // colorMap.repeat.set(scaleZ,1)
+    // displacementMap.repeat.set(1,scaleZ)
+    // normalMap.repeat.set(1,scaleZ)
+    // roughnessMap.repeat.set(1,scaleZ)
+    // aoMap.repeat.set(1,scaleZ)
+
+
     return (
         <animated.mesh position={position} ref={mesh} scale={GSIScale}>
             <boxBufferGeometry attach="geometry" args={args}  />
