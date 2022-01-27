@@ -1,10 +1,9 @@
 import { useSpring, animated} from '@react-spring/three'
 import React, {useRef, useEffect} from 'react';
-import { useLoader } from "@react-three/fiber";
-import { TextureLoader } from "three/src/loaders/TextureLoader";
-import * as THREE from 'three'
-
-const name = (type) => `PavingStones092_1K_${type}.jpg`
+// import { useLoader } from "@react-three/fiber";
+// import { TextureLoader } from "three/src/loaders/TextureLoader";
+// cd
+// const name = (type) => `PavingStones092_1K_${type}.jpg`
 
 const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => {
 
@@ -29,17 +28,17 @@ const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => 
         }
     })
 
-    const {scaleX, scaleY, scaleZ} = GSIScale;
+    // const {scaleX, scaleY, scaleZ} = GSIScale;
 
-    const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useLoader(
-        TextureLoader, [
-            name("Color"),
-            name("Displacement"),
-            name("Normal"),
-            name("Roughness"),
-            name("AmbientOcclusion")
-        ] 
-    )
+    // const [colorMap, displacementMap, normalMap, roughnessMap, aoMap] = useLoader(
+    //     TextureLoader, [
+    //         name("Color"),
+    //         name("Displacement"),
+    //         name("Normal"),
+    //         name("Roughness"),
+    //         name("AmbientOcclusion")
+    //     ] 
+    // )
     // colorMap.wrapS = THREE.RepeatWrapping
     // colorMap.wrapT = THREE.RepeatWrapping
     // colorMap.repeat.set(scaleZ,1)
@@ -52,13 +51,13 @@ const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => 
     return (
         <animated.mesh position={position} ref={mesh} scale={GSIScale}>
             <boxBufferGeometry attach="geometry" args={args}  />
-            <meshStandardMaterial attach="material" 
-                displacementScale={0}
-                map={colorMap}
-                displacementMap={displacementMap}
-                normalMap={normalMap}
-                roughnessMap={roughnessMap}
-                aoMap = {aoMap}
+            <meshStandardMaterial attach="material" color={color}
+                // displacementScale={0}
+                // map={colorMap}
+                // displacementMap={displacementMap}
+                // normalMap={normalMap}
+                // roughnessMap={roughnessMap}
+                // aoMap = {aoMap}
             />
         </animated.mesh>
     )

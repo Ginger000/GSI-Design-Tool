@@ -19,7 +19,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Radio from "@mui/material/Radio";
 import Grid from '@mui/material/Grid';
 import Test from './Components/Test';
-
+import ScenarioDataGrid from './Components/ScenarioDataGrid';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -223,7 +223,9 @@ function App(props) {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit,
           </TabPanel>
           <TabPanel value={value} index={2}>
-            @ WATER LAB 2022
+            {scenarios ? <ScenarioDataGrid scenarios={scenarios} /> : " "}
+            {/* <ScenarioDataGrid scenarios={scenarios} /> */}
+            
           </TabPanel>
           <TabPanel value={value} index={3}>
             @ WATER LAB 2022
