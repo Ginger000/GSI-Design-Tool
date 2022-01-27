@@ -122,7 +122,7 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
                     <OrthographicCamera makeDefault position={[10, 3, -3.5]} zoom={matches? 60 : 40} />
                     <ambientLight intensity={0.3} />
                     <directionalLight position={[-8, 8, -5]} castShadow intensity={1} shadow-camera-far={70} />
-                    <axesHelper args={[10]} />
+                    {/* <axesHelper args={[10]} /> */}
                     <group position={[0, 0, 3]}>
                         <GSIdepth position={[0,1.5,-6.01]} args={[4.001,2.501,6.005]} GSIRatio={loadingRatio} depth={depthUnit[depth]} color='yellow' />
                         <GSIplantedSurface position={[0,1.65,-6]} args={[4.002,0.3,6.01]} GSIRatio={loadingRatio} color='green' />
@@ -137,8 +137,6 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
             <Grid item xs={12} md = {12} lg={12}>
                 {scenarios? 
                     <Stack>
-                        <br />
-                        <br />
                         {stormRecommend && feedbackScenarios ? 
                         [
                             matches ? '':
