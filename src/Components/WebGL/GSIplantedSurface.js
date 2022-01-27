@@ -15,7 +15,7 @@ const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => 
 
     const mesh = useRef(null);
     useEffect(()=>{
-        mesh.current.geometry.translate(0, 1.5, 3.01)
+        mesh.current.geometry.translate(0, 0, 3.01)
     },[])
     // let a = (GSIRatio/(GSIRatio+1)).toFixed(2)
     const {GSIScale} = useSpring({

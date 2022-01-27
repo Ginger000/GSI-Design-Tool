@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import { Stack} from '@mui/material';
 import DATA from "../Data/newFeedbackSearch_all_setDirectInfiltrationAs2.json"
 import Alert from '@mui/material/Alert';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const InputPanel = ({handleSetScenarios, duration ,setDuration, soilType, setSoilType, surfaceType, setSurfaceType, feedbackScenarios, stormRecommend}) => {
     
@@ -88,6 +89,7 @@ const InputPanel = ({handleSetScenarios, duration ,setDuration, soilType, setSoi
     }  
   }
 
+  const matches = useMediaQuery('(min-width:600px)')
     return (
       <Box sx={{ display:"flex", mt: 6, justifyContent: 'center' }}>
         <form onSubmit={generateScenarios} >

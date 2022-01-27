@@ -16,7 +16,7 @@ import GSIbaseSurface from './WebGL/GSIbaseSurface';
 import GSIplantedSurface from './WebGL/GSIplantedSurface';
 import GSIdepth from './WebGL/GSIdepth';
 
-const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetFeedbackScenarios, duration,soilType, surfaceType, isStormRecommend}) => {
+const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetFeedbackScenarios, duration,soilType, surfaceType, isStormRecommend, stormRecommend, feedbackScenarios}) => {
     const [depth, setDepth] = useState(initialDepth)
     const changeDepth = e => {
         let newDepth = Number.parseInt(e.target.value)
@@ -122,11 +122,11 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
                     <OrthographicCamera makeDefault position={[10, 3, -3.5]} zoom={matches? 60 : 40} />
                     <ambientLight intensity={0.3} />
                     <directionalLight position={[-8, 8, -5]} castShadow intensity={1} shadow-camera-far={70} />
-                    {/* <axesHelper args={[10]} /> */}
+                    <axesHelper args={[10]} />
                     <group position={[0, 0, 3]}>
-                        <GSIdepth position={[0,3,-6.01]} args={[4.001,2.501,6.005]} GSIRatio={loadingRatio} depth={depthUnit[depth]} color='yellow' />
-                        <GSIplantedSurface position={[0,1.6,-6]} args={[4,0.3,6]} GSIRatio={loadingRatio} color='green' />
-                        <GSIbaseSurface position={[0,1.6,0]} GSIratio={loadingRatio} args={[4.01,0.31,6.01]} color='lightgrey' />
+                        <GSIdepth position={[0,1.5,-6.01]} args={[4.001,2.501,6.005]} GSIRatio={loadingRatio} depth={depthUnit[depth]} color='yellow' />
+                        <GSIplantedSurface position={[0,1.65,-6]} args={[4.002,0.3,6.01]} GSIRatio={loadingRatio} color='green' />
+                        <GSIbaseSurface position={[0,1.65,0]} GSIratio={loadingRatio} args={[4.01,0.31,6.01]} color='lightgrey' />
                         <GSIbase position={[0,0,0]} args={[4,3,6]} color='pink' />
                     </group>
                     <OrbitControls makeDefault />
@@ -138,6 +138,17 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
                 {scenarios? 
                     <Stack>
                         <br />
+                        <br />
+                        {stormRecommend && feedbackScenarios ? 
+                        [
+                            matches ? '':
+                            <Alert variant="outlined" severity="info" > 
+                                You could adjust the design storm within the range {" "}
+                                {feedbackScenarios[0]["designStorm"]} inches to {" "}
+                                {feedbackScenarios[feedbackScenarios.length-1]["designStorm"]} inches 
+                            </Alert>
+                        ] : ''
+                        }
                         <br />
                         {console.log("depthBound", depthBound, "ratioBound", ratioBound)}
                         <FormControl component="fieldset">

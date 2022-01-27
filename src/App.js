@@ -142,6 +142,8 @@ function App(props) {
           soilType={soilType}
           surfaceType={surfaceType}
           isStormRecommend={handleIsStormRecommend}
+          feedbackScenarios={feedbackScenarios}
+          stormRecommend={stormRecommend}
         />
         <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

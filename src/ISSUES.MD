@@ -9,4 +9,7 @@ https://discourse.threejs.org/t/updating-uv-coordinates-of-buffergeometry/9180
 
 https://github.com/gitname/react-gh-pages
 
+https://stackoverflow.com/questions/37312122/how-to-do-a-nested-if-else-statement-in-reactjs-jsx
+
+
 
