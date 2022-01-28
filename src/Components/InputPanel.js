@@ -97,8 +97,8 @@ const InputPanel = ({handleSetScenarios, duration ,setDuration, soilType, setSoi
                 {stormRecommend && feedbackScenarios ? 
                     <Alert variant="outlined" severity="info" > 
                         You could adjust the design storm within the range {" "}
-                        {feedbackScenarios[0]["designStorm"]} inches to {" "}
-                        {feedbackScenarios[feedbackScenarios.length-1]["designStorm"]} inches 
+                        {feedbackScenarios[feedbackScenarios.length-1]["designStorm"]} inches to {" "}
+                        {feedbackScenarios[0]["designStorm"]} inches 
                     </Alert> :
                     ""
                 }

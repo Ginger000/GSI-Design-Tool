@@ -14,4 +14,6 @@ https://stackoverflow.com/questions/37312122/how-to-do-a-nested-if-else-statemen
 
 https://codesandbox.io/s/github/Jangam/MUI-DataGrid-with-RadioButton/tree/main/?fontsize=14&hidenavigation=1&theme=dark
 
+https://stackoverflow.com/questions/4630312/reset-all-changes-after-last-commit-in-git
+
 
