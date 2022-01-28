@@ -1,17 +1,17 @@
 import { useSpring, animated} from '@react-spring/three'
 import React, {useRef, useEffect} from 'react';
+
 // import { useLoader } from "@react-three/fiber";
 // import { TextureLoader } from "three/src/loaders/TextureLoader";
 // cd
 // const name = (type) => `PavingStones092_1K_${type}.jpg`
 
-const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => {
+const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatios}) => {
 
     
-
     
-
-
+    let prevRatios = prevGSIRatios.current
+    
     const mesh = useRef(null);
     useEffect(()=>{
         mesh.current.geometry.translate(0, 0, 3.01)
@@ -21,10 +21,9 @@ const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => 
 
         // GSIScale:[1,1,GSIRatio/(GSIRatio+1)],
         GSIScale: GSIRatio === 2 ? [1,1,1] : [1,1,GSIRatio/(GSIRatio+1)] ,
-        // delay:prevGSIRatio < GSIRatio ? 2000 : 0 ,
+        // delay: prevRatios[prevRatios.length-2] < GSIRatio ? 2000 : 0 ,
         config:{
-            duration:2000
-            // duration:prevGSIRatio < GSIRatio ? 2000 : 0 
+            duration:prevRatios[prevRatios.length-2] < GSIRatio ? 2500 :1000
         }
     })
 
@@ -50,6 +49,7 @@ const GSIplantedSurface =  ({position, args, color, GSIRatio, prevGSIRatio}) => 
 
     return (
         <animated.mesh position={position} ref={mesh} scale={GSIScale}>
+            {console.log("hahahahahah prev",prevRatios[prevRatios.length-2])}
             <boxBufferGeometry attach="geometry" args={args}  />
             <meshStandardMaterial attach="material" color={color}
                 // displacementScale={0}

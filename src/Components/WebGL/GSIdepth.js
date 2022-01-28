@@ -2,14 +2,13 @@ import { useSpring, animated} from '@react-spring/three'
 import React, { useRef, useEffect} from 'react';
 
 
-const GSIdepth = ({position, args, color, GSIRatio, prevGSIRatio, depth}) => {
+const GSIdepth = ({position, args, color, GSIRatio, prevGSIRatios, depth}) => {
+    let prevRatios = prevGSIRatios.current
     const mesh = useRef(null);
     useEffect(()=>{
         mesh.current.geometry.translate(0, -1.25, 3.01)
     },[])
 
-    console.log("prevGSIRatio", prevGSIRatio)
-    console.log("GSIRatio", GSIRatio)
     const {GSISoilScale} = useSpring({
         
         // GSISoilScale:[1,1,GSIRatio/(GSIRatio+1)],
@@ -17,9 +16,7 @@ const GSIdepth = ({position, args, color, GSIRatio, prevGSIRatio, depth}) => {
         // delay:prevGSIRatio < GSIRatio ? 2000 : 0 ,
         // delay:2000,
         config:{
-            duration:2000
-            // duration:prevGSIRatio < GSIRatio ? 2000 : 1000 
-            // duration:prevGSIRatio < GSIRatio ? 2000 : 0
+            duration:prevRatios[prevRatios.length-2] < GSIRatio ? 2500 :1000
         }
     })
     return (

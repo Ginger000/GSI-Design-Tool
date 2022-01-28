@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Suspense} from 'react'
+import React, {useState, useEffect, Suspense, useRef} from 'react'
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -23,6 +23,7 @@ import GSIplantedSurface from './WebGL/GSIplantedSurface';
 import GSIdepth from './WebGL/GSIdepth';
 import ScenarioDataGrid from './ScenarioDataGrid';
 import FeedbackScenariosDataGrid from './FeedbackScenariosDataGrid';
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -83,7 +84,7 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
         } 
     } 
     const [loadingRatio, setLoadingRatio] = useState(initialRatio);
-    
+    const prevLoadingRatios = useRef([])
     const changeRatio = e => {
         let newRatio = Number.parseFloat(e.target.value)
         //check the whether newRatio is out of bound
@@ -142,6 +143,8 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
         if(depth >= depthBound[0]) setDepthWarning(false)
         //get design storm bound and display recommendation
         generateFeedbackScenarios()
+        prevLoadingRatios.current.push(loadingRatio)
+        
     }, [loadingRatio])
     
     //get the bound of controlled
@@ -179,9 +182,9 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
                     <directionalLight position={[-8, 8, -5]} castShadow intensity={1} shadow-camera-far={70} />
                     {/* <axesHelper args={[10]} /> */}
                     <group position={[0, 0, 3]}>
-                        <GSIdepth position={[0,1.5,-6.01]} args={[4.001,2.501,6.005]} GSIRatio={loadingRatio} depth={depthUnit[depth]} color='yellow' />
-                        <GSIplantedSurface position={[0,1.65,-6]} args={[4.002,0.3,6.01]} GSIRatio={loadingRatio} color='green' />
-                        <GSIbaseSurface position={[0,1.65,0]} GSIratio={loadingRatio} args={[4.01,0.31,6.01]} color='lightgrey' />
+                        <GSIdepth position={[0,1.5,-6.01]} args={[4.001,2.501,6.005]} GSIRatio={loadingRatio} depth={depthUnit[depth]} color='yellow' prevGSIRatios={prevLoadingRatios}/>
+                        <GSIplantedSurface position={[0,1.65,-6]} args={[4.002,0.3,6.01]} GSIRatio={loadingRatio} color='green' prevGSIRatios={prevLoadingRatios} />
+                        <GSIbaseSurface position={[0,1.65,0]} GSIratio={loadingRatio} args={[4.01,0.31,6.01]} color='lightgrey'  />
                         <GSIbase position={[0,0,0]} args={[4,3,6]} color='pink' />
                     </group>
                     <OrbitControls makeDefault />
@@ -203,7 +206,7 @@ const OutputPanel = ({initialDepth, initialRatio, surface, scenarios, handleSetF
                         ] : ''
                         }
                         <br />
-                        {console.log("depthBound", depthBound, "ratioBound", ratioBound)}
+                        {console.log("depthBound", depthBound, "ratioBound", ratioBound, "previousRatio", prevLoadingRatios, "currentRatio", loadingRatio)}
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Depth (inches)</FormLabel>
                             {depthWarning ? 
